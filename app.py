@@ -1,9 +1,12 @@
 from parametros import Parametros
+from reporte import Reportes
 from tkinter.filedialog import askopenfilename
 import tkinter as tk
 
 root = tk.Tk() 
 root.iconify()
+
+
 
 def leer(ruta):
     archivo = open(ruta, "r")
@@ -11,11 +14,10 @@ def leer(ruta):
     archivo.close()
     return contenido
 
-def analizar(texto, type):
-    
-    nombre_curso = ""
+def analizar(texto):
     estudiantes = ""
     parametros = ""
+    curso = ""
     
     inicio_estudiantes = False
     inicio_parametros = False
@@ -23,7 +25,7 @@ def analizar(texto, type):
     
     for c1 in texto:
         if c1 != "=" and fin_curso != True:
-            nombre_curso += c1
+            curso += c1
         elif c1 == "=":
             fin_curso = True
         elif c1 == "{":
@@ -36,6 +38,7 @@ def analizar(texto, type):
         elif c1 != " " and inicio_parametros == True:
             parametros += c1
     lista_parametros = parametros.split(",")
+    nombre_curso = curso
         
     lista_estudiantes = []
     for i in estudiantes.split(","):
@@ -50,14 +53,23 @@ def analizar(texto, type):
                 break  
         lista_estudiantes.append(nuevo_valor)
     
-    lista_final = []
     for estudiante in lista_estudiantes:
         valor = estudiante.split(";")
         t = (valor[0],int(valor[1]))
         lista_final.append(t)
     
+    datos = [nombre_curso,lista_final,lista_parametros]
     
-    
+    return datos
+
+
+archivo_cargado = False
+text = ""
+lista_final = []
+lista_parametros = []
+nombre_curso = ""
+
+datos = []
         
 while(True):
     print("")
@@ -70,24 +82,41 @@ while(True):
     print("--------------------------------------------")
     res = input()
 
-    archivo_cargado = False
-    text = ""
-
     if res == "1":
-        filename = askopenfilename()
-        text = leer(filename)
-        print(text)
-    elif res == "2":
-        print("Console")
+        try:
+            filename = askopenfilename()
+            text = leer(filename)
+            datos = analizar(text)
+            archivo_cargado = True
+            print("Se ha leido el archivo correctamente")
+        except Exception as e:
+            print("ERROR: No se ha podido leer el archivo")
+            print(e)           
+
+    elif res == "2" and archivo_cargado:
+        try:
+            Reportes().consola(datos[1], datos[0], datos[2])
+        except Exception as e:
+            print("ERROR: Ha ocurrido un error al generar el reporte")
+            print(e)
+                
+    elif res == "3" and archivo_cargado:
+        try:
+            Reportes().generar(datos[1], datos[0], datos[2])
+            print("Se ha generado el reporte")
+        except Exception as e:
+            print("ERROR: Ha ocurrido un error al generar el reporte") 
+            print(e)
+            
+    elif res == "2" and archivo_cargado == False:
+        print("ERROR: No se ha cargado ningun archivo")
+        
+    elif res == "3" and archivo_cargado == False:
+        print("ERROR: No se ha cargado ningun archivo")   
+                
     elif res == "4":
         quit()
+        
     else:
-        print("not here")
+        print("ERROR: Opcion no valida")
     
-
-# filename = askopenfilename()
-# print(filename)
-# text = leer(filename)
-# print(text)
-# #print(analizar(text))
-# analizar(text)

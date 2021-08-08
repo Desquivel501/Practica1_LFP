@@ -44,7 +44,10 @@ class Parametros:
                     swapped = True
             if not swapped:
                 break
-        return lista[0]
+            
+        t = lista[0]
+        s = t[0] + ": " + str(t[1])
+        return s
     
     def maximo(self,lista):
         lista = lista
@@ -56,7 +59,10 @@ class Parametros:
                     swapped = True
             if not swapped:
                 break
-        return lista[0]
+            
+        t = lista[0]
+        s = t[0] + ": " + str(t[1])
+        return s
     
     def aprobado(self,lista):
         acumulado = 0
