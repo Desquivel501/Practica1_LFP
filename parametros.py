@@ -32,7 +32,7 @@ class Parametros:
             acumulado += lista[cont][1]
             cont += 1
         prom = acumulado/len(lista)
-        return prom
+        return round(prom, 2)
     
     def minimo(self,lista):
         lista = lista

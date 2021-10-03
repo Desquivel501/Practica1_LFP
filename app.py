@@ -37,7 +37,7 @@ while(True):
     elif res == "3" and archivo_cargado:
         try:
             Reportes().generar(datos[1], datos[0], datos[2])
-            print("Se ha generado el reporte")
+           
         except Exception as e:
             print("ERROR: Ha ocurrido un error al generar el reporte") 
             print(e)

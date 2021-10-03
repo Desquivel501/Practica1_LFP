@@ -1,6 +1,6 @@
 from parametros import Parametros
 from colorama import Fore, Back, Style
-
+import os
 
 class Reportes:
     
@@ -137,9 +137,11 @@ class Reportes:
                 </body>
                 </html>
                 """
-        
+ 
+        cwd = os.getcwd()
         archivo = open("Reporte.html","w+")
         archivo.write(html)
+        print("Se ha generado el reporte en: " + cwd + "\Reporte.html")
         archivo.close()
     
     def consola(self, lista_estudiantes, nombre_curso, lista_parametros):
